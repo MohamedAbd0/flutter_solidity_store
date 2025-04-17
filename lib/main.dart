@@ -19,6 +19,18 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: Utils.messengerKey,
       routerConfig: AppRoute.router,
       title: Constant.APP_NAME,
+      theme: ThemeData(
+        primaryColor: Constant.PRIMARY_COLOR,
+        fontFamily: 'Roboto',
+        appBarTheme: AppBarTheme(
+          color: Constant.PRIMARY_COLOR,
+          foregroundColor: Constant.WHITE_COLOR,
+        ),
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Constant.PRIMARY_COLOR,
+          foregroundColor: Constant.WHITE_COLOR,
+        ),
+      ),
     );
   }
 }
