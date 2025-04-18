@@ -5,7 +5,7 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 class ProductsListingWidget extends StatelessWidget {
   final ScrollPhysics? physics;
   final bool? shrinkWrap;
-  final List products;
+  final List<Product> products;
 
   const ProductsListingWidget({
     required this.products,
@@ -20,12 +20,12 @@ class ProductsListingWidget extends StatelessWidget {
       padding: EdgeInsets.zero,
       shrinkWrap: shrinkWrap ?? false,
       physics: physics,
-      itemCount: 5,
+      itemCount: products.length,
       crossAxisCount: 2,
       mainAxisSpacing: Constant.medium_padding,
       crossAxisSpacing: Constant.medium_padding,
       itemBuilder: (context, index) {
-        return ProductCardWidget();
+        return ProductCardWidget(product: products[index]);
       },
     );
   }

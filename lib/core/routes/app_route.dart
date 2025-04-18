@@ -6,8 +6,8 @@ import 'package:flutter_solidity_store/presentation/view/pages/home_screen.dart'
 enum Routes {
   splashScreen("/splashscreen"),
   home("/home"),
-  productDetailsScreen("/productDetailsScreen"),
-  sellerProfileScreen("/sellerProfileScreen"),
+  productDetailsScreen("/productDetailsScreen/:id"),
+  sellerProfileScreen("/sellerProfileScreen/:sellerAddress"),
   addProductScreen("/addProductScreen");
 
   const Routes(this.path);
@@ -42,14 +42,18 @@ class AppRoute {
         path: Routes.productDetailsScreen.path,
         name: Routes.productDetailsScreen.name,
         builder: (_, state) {
-          return const ProductDetailsScreen();
+          return ProductDetailsScreen(
+            productId: state.pathParameters['id'] ?? "",
+          );
         },
       ),
       GoRoute(
         path: Routes.sellerProfileScreen.path,
         name: Routes.sellerProfileScreen.name,
         builder: (_, state) {
-          return const SellerProfileScreen();
+          return SellerProfileScreen(
+            sellerAddress: state.pathParameters['sellerAddress'] ?? "",
+          );
         },
       ),
       GoRoute(

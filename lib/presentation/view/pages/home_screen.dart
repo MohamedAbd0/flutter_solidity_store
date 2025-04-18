@@ -9,9 +9,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  late StoreCubit _storeCubitCubit;
   @override
   void initState() {
     super.initState();
+    _storeCubitCubit = getIt<StoreCubit>();
+    _storeCubitCubit.fetchProduct();
   }
 
   @override
@@ -34,37 +37,66 @@ class _HomeScreenState extends State<HomeScreen> {
           context.pushNamed(Routes.addProductScreen.name);
         },
       ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(
-          Constant.medium_padding,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(
-                Constant.normal_border_radius,
+      body: RefreshIndicator.adaptive(
+        onRefresh: () async {
+          _storeCubitCubit.fetchProduct();
+        },
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(
+            Constant.medium_padding,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(
+                  Constant.normal_border_radius,
+                ),
+                child: Assets.images.imageCover.image(),
               ),
-              child: Assets.images.imageCover.image(),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                vertical: Constant.medium_padding,
-              ),
-              child: Text(
-                "Newest Products",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 18,
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: Constant.medium_padding,
+                ),
+                child: Text(
+                  "Newest Products",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
                 ),
               ),
-            ),
-            ProductsListingWidget(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              products: [],
-            ),
-          ],
+              BlocConsumer<StoreCubit, StoreState>(
+                bloc: _storeCubitCubit,
+                listener: (context, state) {
+                  if (state.cubitStatus == CubitStatus.error) {
+                    Utils.showErrorMessage(
+                      context: context,
+                      error: state.errorMessage ?? "",
+                    );
+                  }
+                },
+                builder: (context, state) {
+                  if (state.cubitStatus == CubitStatus.loading) {
+                    return Padding(
+                      padding: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.width / 2,
+                      ),
+                      child: Center(
+                        child: CircularProgressIndicator.adaptive(),
+                      ),
+                    );
+                  } else {
+                    return ProductsListingWidget(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      products: state.products,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

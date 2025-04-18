@@ -31,7 +31,10 @@ class _PriceWidgetState extends State<PriceWidget> {
               width: Constant.small_padding,
             ),
             Text(
-              "1.0103",
+              NumberFormat.currency(
+                decimalDigits: 3,
+                symbol: '',
+              ).format(widget.etherAmount),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               textScaler: TextScaler.linear(1.1),
@@ -65,7 +68,7 @@ class _PriceWidgetState extends State<PriceWidget> {
               NumberFormat.currency(
                 decimalDigits: 0,
                 symbol: '',
-              ).format(22233),
+              ).format(widget.etherAmount * 100),
               style: TextStyle(
                 color: widget.color,
               ),

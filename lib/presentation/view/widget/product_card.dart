@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_solidity_store/export.dart';
 
 class ProductCardWidget extends StatefulWidget {
-  const ProductCardWidget({super.key});
+  final Product product;
+  const ProductCardWidget({super.key, required this.product});
 
   @override
   State<ProductCardWidget> createState() => _ProductCardWidgetState();
@@ -14,7 +15,10 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        context.pushNamed(Routes.productDetailsScreen.name);
+        context.pushNamed(
+          Routes.productDetailsScreen.name,
+          pathParameters: {'id': widget.product.id},
+        );
       },
       child: Container(
         decoration: BoxDecoration(
@@ -42,8 +46,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   topRight: Radius.circular(Constant.normal_border_radius),
                 ),
                 child: CachedNetworkImage(
-                  imageUrl:
-                      "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
+                  imageUrl: widget.product.image,
                   placeholder: (context, url) =>
                       Assets.animation.animationEthereumLogo.lottie(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
@@ -58,7 +61,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Product Name",
+                    widget.product.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
@@ -70,7 +73,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                     height: Constant.small_padding,
                   ),
                   PriceWidget(
-                    etherAmount: 98,
+                    etherAmount: widget.product.price,
                   ),
                 ],
               ),
