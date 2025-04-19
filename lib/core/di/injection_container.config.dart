@@ -40,18 +40,21 @@ extension GetItInjectableX on _i174.GetIt {
       environmentFilter,
     );
     final appModule = _$AppModule();
+    gh.lazySingleton<_i234.SmartContractService>(
+        () => appModule.messagingService);
     gh.lazySingleton<_i234.AppConfig>(() => appModule.appConfig);
     gh.lazySingleton<_i361.Dio>(() => appModule.dio);
     gh.lazySingleton<_i1015.NavigationService>(
         () => _i1015.NavigationService());
-    gh.singleton<_i234.StoreRepo>(() => _i319.StoreRepositoryImpl());
     gh.lazySingleton<_i315.AppService>(() => _i315.AppService(gh<_i361.Dio>()));
+    gh.singleton<_i234.StoreRepo>(
+        () => _i319.StoreRepositoryImpl(gh<_i234.SmartContractService>()));
     gh.lazySingleton<_i516.StoreUsecases>(
         () => _i516.StoreUsecases(gh<_i234.StoreRepo>()));
-    gh.factory<_i509.ProductDetailsCubit>(
-        () => _i509.ProductDetailsCubit(gh<_i234.StoreUsecases>()));
     gh.factory<_i830.SellerProfileCubit>(
         () => _i830.SellerProfileCubit(gh<_i234.StoreUsecases>()));
+    gh.factory<_i509.ProductDetailsCubit>(
+        () => _i509.ProductDetailsCubit(gh<_i234.StoreUsecases>()));
     gh.lazySingleton<_i207.StoreCubit>(
         () => _i207.StoreCubit(gh<_i234.StoreUsecases>()));
     return this;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_solidity_store/utils/constants.dart';
+import 'package:flutter_solidity_store/export.dart';
 import 'package:intl/intl.dart';
 import 'package:motion_toast/motion_toast.dart';
 
@@ -10,7 +10,7 @@ class Utils {
     return DateFormat.yMMMEd().add_jm().format(DateTime.now());
   }
 
-  static showErrorMessage({
+  static void showErrorMessage({
     required String error,
     required BuildContext context,
   }) {
@@ -31,7 +31,7 @@ class Utils {
     ).show(context);
   }
 
-  static showSuccessMessage({
+  static void showSuccessMessage({
     required String message,
     required BuildContext context,
   }) {
@@ -50,5 +50,9 @@ class Utils {
       ),
       toastAlignment: Alignment.topCenter,
     ).show(context);
+  }
+
+  static String retriveIPFSFileUrl(String cid) {
+    return "${getIt<AppConfig>().pinataGatewayUrl}/ipfs/$cid";
   }
 }

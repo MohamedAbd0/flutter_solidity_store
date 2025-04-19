@@ -6,7 +6,8 @@ import 'package:injectable/injectable.dart';
 
 @Singleton(as: StoreRepo)
 class StoreRepositoryImpl implements StoreRepo {
-  StoreRepositoryImpl();
+  final SmartContractService smartContractService;
+  StoreRepositoryImpl(this.smartContractService);
 
   List<Product> products = [
     Product(
@@ -16,7 +17,7 @@ class StoreRepositoryImpl implements StoreRepo {
       description:
           "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
       image:
-          "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
+          "https://beige-giant-clownfish-525.mypinata.cloud/ipfs/bafybeicr2xu5vqwx3dqexmjgjx5uu6gyp64zurwnefongi2s2wwkdndd5a",
       isSold: false,
       seller: "1",
       createdAt: DateTime.now(),
@@ -121,12 +122,17 @@ class StoreRepositoryImpl implements StoreRepo {
 
   @override
   Future<Either<Failure, StoreInfo>> fetchStoreInfo() async {
-    return Right(
-      StoreInfo(
-        title: "Tala Store",
-        cover:
-            "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-      ),
-    );
+    try {
+      final result = await smartContractService.init();
+      return Right(
+        StoreInfo(
+          title: "Tala Store",
+          cover:
+              "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
+        ),
+      );
+    } catch (e) {
+      return Left(ServerFailure("Fail to connect blockchain network"));
+    }
   }
 }

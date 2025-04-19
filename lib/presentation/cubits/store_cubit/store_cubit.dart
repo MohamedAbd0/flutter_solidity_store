@@ -11,6 +11,24 @@ class StoreCubit extends Cubit<StoreState> {
 
   final List<Product> _products = [];
 
+  Future<void> init() async {
+    emit(state.copyWith(cubitStatus: CubitStatus.loading));
+    await Future.delayed(Duration(seconds: 1));
+
+    final result = await storeUsecases.fetchStoreInfo();
+    result.fold((l) {
+      emit(
+        state.copyWith(
+          cubitStatus: CubitStatus.error,
+          errorMessage: l.message,
+        ),
+      );
+    }, (r) async {
+      emit(state.copyWith(storeInfo: r));
+      await fetchProduct();
+    });
+  }
+
   Future<void> fetchProduct() async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
     _products.clear();

@@ -17,7 +17,7 @@ enum Routes {
 
 class AppRoute {
   static final GoRouter router = GoRouter(
-    initialLocation: Routes.home.path,
+    initialLocation: Routes.splashScreen.path,
     navigatorKey: getIt<NavigationService>().navigatorKey,
     errorBuilder: (context, state) {
       router.goNamed(Routes.splashScreen.name);
