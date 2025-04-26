@@ -1,2 +1,2 @@
 export 'store_repo.dart';
-export 'store_smart_contract_repo.dart';
+export 'crypto_currency_price_repo.dart';

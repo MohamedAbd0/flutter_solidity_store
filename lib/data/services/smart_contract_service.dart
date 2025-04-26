@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_solidity_store/export.dart';
-import 'package:reown_walletkit/reown_walletkit.dart';
 import 'package:http/http.dart';
+import 'package:web3dart/web3dart.dart';
 import 'package:web_socket_channel/io.dart';
 
 class SmartContractService {
@@ -40,7 +40,7 @@ class SmartContractService {
 
     /// Setup deployed Contract (abi, contract name)
     _deployedContract = DeployedContract(
-      ContractAbi.fromJson(_contractABI!, "Contract Name in json file"),
+      ContractAbi.fromJson(_contractABI!, "FlutterSolidityStore"),
       _contractAddress!,
     );
 
@@ -61,8 +61,30 @@ class SmartContractService {
   Future<dynamic> fetchAllProducts() async {
     List<dynamic> product = await _web3client!.call(
       contract: _deployedContract!,
-      function: _deployedContract!.function("products"),
+      function: _deployedContract!.function("getAllProducts"),
       params: [],
+    );
+    return product;
+  }
+
+  Future<dynamic> fetctProductDetails(String id) async {
+    List<dynamic> product = await _web3client!.call(
+      contract: _deployedContract!,
+      function: _deployedContract!.function("getProduct"),
+      params: [
+        id,
+      ],
+    );
+    return product;
+  }
+
+  Future<dynamic> fetchSellerProducts(String id) async {
+    List<dynamic> product = await _web3client!.call(
+      contract: _deployedContract!,
+      function: _deployedContract!.function("getProductsByOwner"),
+      params: [
+        EthereumAddress.fromHex(id),
+      ],
     );
     return product;
   }

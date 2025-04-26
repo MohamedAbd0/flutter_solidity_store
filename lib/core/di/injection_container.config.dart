@@ -8,17 +8,23 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:dio/dio.dart' as _i361;
 import 'package:flutter_solidity_store/core/di/app_module.dart' as _i706;
 import 'package:flutter_solidity_store/core/routes/navigation_service.dart'
     as _i1015;
-import 'package:flutter_solidity_store/data/network/retrofit/app_service.dart'
-    as _i315;
+import 'package:flutter_solidity_store/data/network/crypto_currency_price_network.dart'
+    as _i772;
+import 'package:flutter_solidity_store/data/network/export.dart' as _i983;
+import 'package:flutter_solidity_store/data/repositories/crypto_currency_price_impl.dart'
+    as _i181;
 import 'package:flutter_solidity_store/data/repositories/store_repository_impl.dart'
     as _i319;
+import 'package:flutter_solidity_store/domain/usecases/crypto_currency_price_usecases.dart'
+    as _i971;
 import 'package:flutter_solidity_store/domain/usecases/store_usecases.dart'
     as _i516;
 import 'package:flutter_solidity_store/export.dart' as _i234;
+import 'package:flutter_solidity_store/presentation/cubits/crypto_currency_price_cubit/crypto_currency_price_cubit.dart'
+    as _i183;
 import 'package:flutter_solidity_store/presentation/cubits/product_details_cubit/product_details_cubit.dart'
     as _i509;
 import 'package:flutter_solidity_store/presentation/cubits/seller_profile_cubit/seller_profile_cubit.dart'
@@ -43,12 +49,15 @@ extension GetItInjectableX on _i174.GetIt {
     gh.lazySingleton<_i234.SmartContractService>(
         () => appModule.messagingService);
     gh.lazySingleton<_i234.AppConfig>(() => appModule.appConfig);
-    gh.lazySingleton<_i361.Dio>(() => appModule.dio);
     gh.lazySingleton<_i1015.NavigationService>(
         () => _i1015.NavigationService());
-    gh.lazySingleton<_i315.AppService>(() => _i315.AppService(gh<_i361.Dio>()));
+    gh.lazySingleton<_i772.PriceRateNetwork>(() => _i772.PriceRateNetwork());
     gh.singleton<_i234.StoreRepo>(
         () => _i319.StoreRepositoryImpl(gh<_i234.SmartContractService>()));
+    gh.singleton<_i234.CryptoCurrencyPriceRepo>(
+        () => _i181.CryptoCurrencyPriceRepoImpl(gh<_i983.PriceRateNetwork>()));
+    gh.lazySingleton<_i971.CryptoCurrencyPriceUsecases>(() =>
+        _i971.CryptoCurrencyPriceUsecases(gh<_i234.CryptoCurrencyPriceRepo>()));
     gh.lazySingleton<_i516.StoreUsecases>(
         () => _i516.StoreUsecases(gh<_i234.StoreRepo>()));
     gh.factory<_i830.SellerProfileCubit>(
@@ -57,6 +66,9 @@ extension GetItInjectableX on _i174.GetIt {
         () => _i509.ProductDetailsCubit(gh<_i234.StoreUsecases>()));
     gh.lazySingleton<_i207.StoreCubit>(
         () => _i207.StoreCubit(gh<_i234.StoreUsecases>()));
+    gh.lazySingleton<_i183.CryptoCurrencyPriceCubit>(() =>
+        _i183.CryptoCurrencyPriceCubit(
+            gh<_i234.CryptoCurrencyPriceUsecases>()));
     return this;
   }
 }

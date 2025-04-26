@@ -15,6 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     _storeCubitCubit = getIt<StoreCubit>();
     _storeCubitCubit.init();
+    getIt<CryptoCurrencyPriceCubit>().getEthToAedRateStream();
   }
 
   @override

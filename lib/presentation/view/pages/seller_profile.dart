@@ -63,7 +63,12 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
                               SizedBox(
                                 height: Constant.pig_padding,
                               ),
-                              Text(widget.sellerAddress),
+                              Text(
+                                widget.sellerAddress,
+                                style: TextStyle(
+                                  color: Constant.WHITE_COLOR,
+                                ),
+                              ),
                               SizedBox(
                                 height: kToolbarHeight / 2,
                               ),

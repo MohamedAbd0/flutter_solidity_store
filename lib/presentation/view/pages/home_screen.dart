@@ -33,20 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
         return Scaffold(
           appBar: AppBar(
             title: Text(state.storeInfo?.title ?? ""),
-            centerTitle: false,
-            actions: [
-              ElevatedButton.icon(
-                onPressed: () {},
-                label: Text("Wallet Connect"),
-              )
-            ],
-          ),
-          floatingActionButton: FloatingActionButton.extended(
-            label: Text("Add Product"),
-            icon: Icon(Icons.add),
-            onPressed: () {
-              context.pushNamed(Routes.addProductScreen.name);
-            },
           ),
           body: RefreshIndicator.adaptive(
             onRefresh: () async {

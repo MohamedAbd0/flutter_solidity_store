@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_solidity_store/export.dart';
 import 'package:injectable/injectable.dart';
@@ -36,19 +34,5 @@ class StoreUsecases {
     required String productId,
   }) async {
     return await storeRepo.buyProduct(productId: productId);
-  }
-
-  Future<Either<Failure, Product>> createProduct({
-    required String title,
-    required double price,
-    required String description,
-    required File image,
-  }) async {
-    return await storeRepo.createProduct(
-      title: title,
-      price: price,
-      description: description,
-      image: image,
-    );
   }
 }

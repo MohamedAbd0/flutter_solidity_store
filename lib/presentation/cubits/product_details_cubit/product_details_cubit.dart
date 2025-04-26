@@ -9,8 +9,6 @@ class ProductDetailsCubit extends Cubit<ProductDetailsState> {
 
   Future<void> fetchProductDetails(String id) async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
-
-    await Future.delayed(Duration(seconds: 1));
     final result = await storeUsecases.fetchProductDetails(productId: id);
     result.fold((l) {
       emit(

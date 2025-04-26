@@ -7,8 +7,7 @@ enum Routes {
   splashScreen("/splashscreen"),
   home("/home"),
   productDetailsScreen("/productDetailsScreen/:id"),
-  sellerProfileScreen("/sellerProfileScreen/:sellerAddress"),
-  addProductScreen("/addProductScreen");
+  sellerProfileScreen("/sellerProfileScreen/:sellerAddress");
 
   const Routes(this.path);
 
@@ -54,13 +53,6 @@ class AppRoute {
           return SellerProfileScreen(
             sellerAddress: state.pathParameters['sellerAddress'] ?? "",
           );
-        },
-      ),
-      GoRoute(
-        path: Routes.addProductScreen.path,
-        name: Routes.addProductScreen.name,
-        builder: (_, state) {
-          return const AddProductScreen();
         },
       ),
     ],

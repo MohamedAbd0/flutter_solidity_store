@@ -1,3 +1,5 @@
+import 'package:web3dart/web3dart.dart';
+
 class Product {
   String id;
   String title;
@@ -6,7 +8,7 @@ class Product {
   String image;
   DateTime createdAt;
   bool isSold;
-  String seller;
+  EthereumAddress seller;
 
   Product({
     required this.id,

@@ -50,6 +50,7 @@ class _ProductCardWidgetState extends State<ProductCardWidget> {
                   placeholder: (context, url) =>
                       Assets.animation.animationEthereumLogo.lottie(),
                   errorWidget: (context, url, error) => Icon(Icons.error),
+                  fit: BoxFit.cover,
                 ),
               ),
             ),

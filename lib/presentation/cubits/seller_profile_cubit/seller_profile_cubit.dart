@@ -10,8 +10,6 @@ class SellerProfileCubit extends Cubit<SellerProfileState> {
   Future<void> fetchSellerProducts(String sellerAddress) async {
     emit(state.copyWith(cubitStatus: CubitStatus.loading));
 
-    await Future.delayed(Duration(seconds: 1));
-
     final result =
         await storeUsecases.fetchSellerProducts(sellerAddress: sellerAddress);
     result.fold((l) {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:flutter_solidity_store/export.dart';
 import 'package:injectable/injectable.dart';
@@ -9,130 +7,124 @@ class StoreRepositoryImpl implements StoreRepo {
   final SmartContractService smartContractService;
   StoreRepositoryImpl(this.smartContractService);
 
-  List<Product> products = [
-    Product(
-      id: "2wqewqdse23wqewqwdewqe",
-      title: "Monkey Art",
-      price: 1.091,
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image:
-          "https://beige-giant-clownfish-525.mypinata.cloud/ipfs/bafybeicr2xu5vqwx3dqexmjgjx5uu6gyp64zurwnefongi2s2wwkdndd5a",
-      isSold: false,
-      seller: "1",
-      createdAt: DateTime.now(),
-    ),
-    Product(
-      id: "2wqewqdse23wqewqwewqee",
-      title: "Rappit Art",
-      price: 1.091,
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image: "https://cdn.open-pr.com/V/7/V721774605_g.jpg",
-      isSold: false,
-      seller: "1",
-      createdAt: DateTime.now(),
-    ),
-    Product(
-      id: "2wqewqdse23wqewqwwewqe",
-      title: "Monkey Art",
-      price: 1.091,
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image:
-          "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-      isSold: false,
-      seller: "1",
-      createdAt: DateTime.now(),
-    ),
-    Product(
-      id: "2wqewqdse23wqeqwqwewqe",
-      title: "Monkey Art",
-      price: 1.091,
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image:
-          "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-      isSold: false,
-      seller: "1",
-      createdAt: DateTime.now(),
-    ),
-    Product(
-      id: "2wqewqdse23wqewewdqwewqe",
-      title: "Monkey Art",
-      price: 1.091,
-      description:
-          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-      image:
-          "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-      isSold: false,
-      seller: "1",
-      createdAt: DateTime.now(),
-    ),
-  ];
-
   @override
   Future<Either<Failure, Product>> buyProduct({
     required String productId,
   }) async {
-    return Right(products.first);
-  }
-
-  @override
-  Future<Either<Failure, Product>> createProduct({
-    required String title,
-    required double price,
-    required String description,
-    required File image,
-  }) async {
-    return Right(Product(
-      id: "id",
-      title: title,
-      price: price,
-      description: description,
-      image:
-          "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-      createdAt: DateTime.now(),
-      isSold: false,
-      seller: "1",
-    ));
+    return Left(ServerFailure("404 Not found"));
   }
 
   @override
   Future<Either<Failure, Product>> fetchProductDetails({
     required String productId,
   }) async {
-    return Right(products.firstWhere((item) => item.id == productId));
+    try {
+      Product? product;
+      final List<dynamic> result =
+          await smartContractService.fetctProductDetails(productId);
+
+      if (result.isNotEmpty && (result.first as List<dynamic>).isNotEmpty) {
+        List<dynamic> productsMetaData = result.first;
+        final productItem = ProductModel.fromData(productsMetaData);
+        product = Product(
+          id: productItem.id,
+          title: productItem.title,
+          description: productItem.description,
+          image: productItem.image,
+          isSold: productItem.isSold,
+          seller: productItem.seller,
+          price: productItem.price,
+          createdAt: productItem.createdAt,
+        );
+
+        return Right(product);
+      } else {
+        return Left(ServerFailure("404 Not found"));
+      }
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
-  Future<Either<Failure, List<Product>>> fetchProducts({
-    int offset = 0,
-    int rows = 10,
-  }) async {
-    return Right(products);
+  Future<Either<Failure, List<Product>>> fetchProducts() async {
+    try {
+      List<Product> products = [];
+      final List<dynamic> result =
+          await smartContractService.fetchAllProducts();
+
+      if (result.isNotEmpty) {
+        List<dynamic>? productsMetaData = result.first;
+        productsMetaData?.forEach((item) {
+          final product = ProductModel.fromData(item);
+          products.add(Product(
+            id: product.id,
+            title: product.title,
+            description: product.description,
+            image: product.image,
+            isSold: product.isSold,
+            seller: product.seller,
+            price: product.price,
+            createdAt: product.createdAt,
+          ));
+        });
+      }
+
+      return Right(products);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, List<Product>>> fetchSellerProducts({
     required String sellerAddress,
   }) async {
-    return Right(products);
+    try {
+      List<Product> products = [];
+      final List<dynamic> result =
+          await smartContractService.fetchSellerProducts(sellerAddress);
+
+      if (result.isNotEmpty) {
+        List<dynamic>? productsMetaData = result.first;
+        productsMetaData?.forEach((item) {
+          final product = ProductModel.fromData(item);
+          products.add(Product(
+            id: product.id,
+            title: product.title,
+            description: product.description,
+            image: product.image,
+            isSold: product.isSold,
+            seller: product.seller,
+            price: product.price,
+            createdAt: product.createdAt,
+          ));
+        });
+      }
+
+      return Right(products);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
   Future<Either<Failure, StoreInfo>> fetchStoreInfo() async {
     try {
       final result = await smartContractService.init();
-      return Right(
-        StoreInfo(
-          title: "Tala Store",
-          cover:
-              "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149622021.jpg",
-        ),
-      );
+
+      if (result != null && result is List && result.isNotEmpty) {
+        return Right(
+          StoreInfo(
+            title: result[0],
+            cover: Utils.retriveIPFSFileUrl(result[1]),
+          ),
+        );
+      } else {
+        return Left(ServerFailure("Fail to connect blockchain network"));
+      }
     } catch (e) {
-      return Left(ServerFailure("Fail to connect blockchain network"));
+      return Left(ServerFailure("Fail to connect blockchain network -> $e"));
     }
   }
 }

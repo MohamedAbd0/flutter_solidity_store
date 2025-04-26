@@ -7,7 +7,7 @@ class Utils {
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
 
   static String formatDate(DateTime date) {
-    return DateFormat.yMMMEd().add_jm().format(DateTime.now());
+    return DateFormat.yMMMEd().add_jm().format(date);
   }
 
   static void showErrorMessage({

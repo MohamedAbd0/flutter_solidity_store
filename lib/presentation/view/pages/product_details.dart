@@ -77,12 +77,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                     subtitle: Text(
                       Utils.formatDate(
-                          state.product?.createdAt ?? DateTime.now()),
+                        state.product?.createdAt ?? DateTime.now(),
+                      ),
                     ),
                   ),
                   ListTile(
                     leading: AvatarPlus(
-                      state.product?.seller ?? "",
+                      state.product?.seller.hex ?? "",
                       width: 45,
                     ),
                     title: Text(
@@ -98,7 +99,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       context.pushNamed(
                         Routes.sellerProfileScreen.name,
                         pathParameters: {
-                          'sellerAddress': state.product?.seller ?? ""
+                          'sellerAddress': state.product?.seller.hex ?? ""
                         },
                       );
                     },
@@ -119,9 +120,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Constant.pig_padding,
               ),
               child: MyBotton(
-                onTap: () {
-                  print("object");
-                },
+                onTap: () {},
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -134,7 +133,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       ),
                     ),
                     PriceWidget(
-                      etherAmount: 98,
+                      etherAmount: state.product?.price ?? 0,
                       color: Constant.WHITE_COLOR,
                     )
                   ],
