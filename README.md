@@ -1,7 +1,12 @@
 # Flutter Solidity Store
 
+![image](https://github.com/MohamedAbd0/flutter_solidity_store/blob/main/screens_demo/cover.png?raw=true)
 A Flutter DApp that connects to an Ethereum smart contract deployed on **Sepolia Testnet** using **INFURA**, interacts with IPFS files hosted via **PINATA**, manages state with **Cubit**, and routes pages with **GoRouter**.  
 It also fetches live crypto prices to convert **ETH to AED**.
+
+## Demo gif
+
+![image](https://github.com/MohamedAbd0/flutter_solidity_store/blob/main/screens_demo/demo_dapp.gif?raw=true)
 
 ---
 
@@ -143,6 +148,8 @@ flutter pub run build_runner build --delete-conflicting-outputs
 
 ### 4. Deploy Your Smart Contract
 
+![image](https://github.com/MohamedAbd0/flutter_solidity_store/blob/main/screens_demo/deploy_smartcontract.gif?raw=true)
+
 Before running the Flutter app, you must deploy your Solidity smart contract:
 
 - Use Remix IDE or Hardhat to deploy FlutterSolidityStore.sol to Sepolia Testnet.
@@ -152,6 +159,7 @@ Update these details in your Flutter project’s Config class.
 
 ### 5. Adding New Products via Remix and MetaMask
 
+![image](https://github.com/MohamedAbd0/flutter_solidity_store/blob/main/screens_demo/add_product.gif?raw=true)
 In addition to reading data from the blockchain, you can also **add new products** directly to the smart contract.
 
 Here’s how the process works:
