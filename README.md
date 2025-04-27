@@ -149,3 +149,28 @@ Before running the Flutter app, you must deploy your Solidity smart contract:
 - After deployment, copy the following: Contract Address - Contract ABI JSON (export it from Remix or your build artifacts)
 
 Update these details in your Flutter project’s Config class.
+
+### 5. Adding New Products via Remix and MetaMask
+
+In addition to reading data from the blockchain, you can also **add new products** directly to the smart contract.
+
+Here’s how the process works:
+
+1. **Use Remix IDE**:
+
+   - Open your deployed `FlutterSolidityStore` smart contract in **Remix**.
+   - Call the `addProduct` function (or the corresponding function for adding a new product).
+   - Enter the required parameters (e.g., product name, description, price).
+
+2. **Confirm the Transaction via MetaMask**:
+
+   - When you submit the transaction, **MetaMask** will prompt you to **confirm** the request.
+   - Once confirmed, the transaction will be mined and included in the blockchain.
+
+3. **Read the New Product from the Flutter App**:
+   - The Flutter application automatically reads from the blockchain.
+   - Newly added products will be fetched and displayed in the app the next time you fetch all products or refresh the screen.
+
+> 🔥 This flow demonstrates the real power of DApps — the frontend (Flutter) is **always in sync** with the latest blockchain data without needing a traditional centralized database.
+
+---
